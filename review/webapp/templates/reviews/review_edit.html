@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block link %}
+    {% include "partial/link_header.html" %}
+{% endblock %}
+
+{% block content %}
+  <h1 class="mt-3">Редактирование отзыва</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить изменения</button>
+  </form>
+  <a href="{% url 'webapp:product_detail_view' product.pk %}">Назад к продукту</a>
+{% endblock %}
