@@ -1,12 +1,12 @@
 from django.urls import path
-from webapp.views import ProductListView
+from webapp.views import ProductListView, ProductCreateView
 
 app_name = "webapp"
 
 urlpatterns = [
     path('', ProductListView.as_view(), name="index"),
     # path('projects/<int:pk>', ProjectDetailView.as_view(), name="project_detail_view"),
-    # path('project/add/', ProjectCreateView.as_view(), name="project_create"),
+    path('project/add/', ProductCreateView.as_view(), name="product_create"),
     # path('project/<int:pk>/update', ProjectUpdateView.as_view(), name="project_update_view"),
     # path('project/<int:pk>/delete', ProjectDeleteView.as_view(), name="project_delete_view"),
     # path('project/<int:pk>/tasks/add/', TaskCreateView.as_view(), name="task_create"),
