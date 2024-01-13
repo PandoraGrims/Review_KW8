@@ -5,7 +5,7 @@
            href="{% url "webapp:index" %}">Главная</a>
     </li>
 
-    {% if perms.webapp.add_project %}
+    {% if perms.webapp.add_product %}
         <li class="nav-item nav_item_header text-center">
             <a class="nav-link nav_link_header" href="{% url "webapp:product_create" %}" style="color: whitesmoke">Добавить продукт</a>
         </li>

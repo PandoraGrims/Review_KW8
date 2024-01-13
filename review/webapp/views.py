@@ -1,7 +1,9 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from webapp.models import Product
 from webapp.forms import ProductForm
+from django.shortcuts import reverse
 
 
 class ProductListView(ListView):
@@ -13,24 +15,27 @@ class ProductListView(ListView):
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'products/product_detail.html'
-    context_object_name = 'product'
+    context_object_name = 'products'
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'products/product_create.html'
-    success_url = reverse_lazy('product_list')
+    success_url = reverse_lazy('webapp:index')
+    permission_required = "webapp.add_product"
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'products/product_edit.html'
-    success_url = reverse_lazy('product_list')
+    success_url = reverse_lazy('webapp:index')
+    permission_required = "webapp.change_product"
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(PermissionRequiredMixin, DeleteView):
     model = Product
     template_name = 'products/product_delete.html'
-    success_url = reverse_lazy('product_list')
+    success_url = reverse_lazy('webapp:index')
+    permission_required = "webapp.delete_product"

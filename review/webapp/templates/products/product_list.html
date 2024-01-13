@@ -1,12 +1,40 @@
-{% extends 'base.html' %}
-
-{% block menu %}
-    {% if request.user.is_authenticated %}
-{#    <a class="nav-link" aria-current="page" href="{% url 'webapp:product_create' %}">Создать продукт</a>#}
-    {% endif %}
+{% extends "base.html" %}
+{% block link %}
+    {% include "partial/link_header.html" %}
 {% endblock %}
 
 {% block content %}
-    <h1>Products</h1>
-{#    {% include 'partial/article_list.html' %}#}
+
+    <div class="title_head text-center pt-2 pb-2">
+        <h1 class="head-our-works" style="font-size: 80px">PRODUCT</h1>
+    </div>
+    <br>
+    <div class="container text-center">
+
+        <div class="container-our-works pb-5 pt-5">
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% for product in products %}
+                    <div class="col-xxl-4 col-lg-6 col-sm-12">
+                        <div class="card card-our-works h-100"
+                             style="background-color: darkgray">
+                            <div class="card-body ">
+                                <p class="card-text card-text-1 text-uppercase"
+                                   style="font-size: 36px;">Товар: {{ product.name }}</p>
+
+                            </div>
+                            <a class="card-link py-3"
+                               href="{% url "webapp:product_detail_view" product.pk %}">
+                                <button type="submit"
+                                        class="btn btm-input btn-outline-warning btn-lg py-2  text-uppercase rounded-0">
+                                    Заглянуть в проект
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <h3>Результата нет</h3>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

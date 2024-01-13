@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% block link %}
+    {% include "partial/link_header.html" %}
+{% endblock %}
+
+{% block title %}Детали Проекта{% endblock %}
+
+{% block content %}
+
+
+    <div class="title_head text-center pt-5 pb-1">
+        <h1 class="head-our-works" style="font-size: 80px">PRODUCT</h1>
+    </div>
+
+    <div class="hbb_container" style="justify-content:center">
+        <div class="card mx-auto mb-3 mt-2 py-2"
+             style="max-width: 70%;background-color: darkolivegreen; text-align: center">
+
+            <div class="card-body">
+                <h1 class="card-title">
+                    Название: {{ products.name }}</h1>
+                <p class="card-text" style="font-size: 26px;">Описание: {{ products.description }}</p>
+
+                <p class="card-text"><small class="text-body-secondary"
+                                            style="font-size: 22px">Категория {{ products.category }}</small>
+                </p>
+
+                {% if products.image %}
+                    <img src="{{ products.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img class="w-25" src="{% static 'img/fullpull.png' %}" alt="fullpull">
+                {% endif %}
+
+                {% if perms.webapp.change_product %}
+                    <a class="card-link pt-3 pt-4 pb-3" href="{% url "webapp:product_update_view" products.pk %}">
+                        <button type="submit"
+                                class="btn btm-input btn-outline-warning btn-lg py-2 text-uppercase rounded-0">
+                            Редактирование
+                        </button>
+                    </a>
+                {% endif %}
+
+                {% if perms.webapp.change_product %}
+                    <a class="card-link pt-3 pt-4 pb-3" href="{% url "webapp:product_delete_view" products.pk %}">
+                        <button type="submit"
+                                class="btn btm-input btn-outline-warning btn-lg py-2 text-uppercase rounded-0">
+                            Удаление
+                        </button>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <h3 class="mt-2">Reviews: </h3>
+    <div class="row row-cols-3 mt-2">
+        {% for review in reviews %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Автор: {{ review.author }}</h5>
+                        <p class="card-text">{{ review.description }}</p>
+                        <p>{{ review.created_at }}</p>
+
+                        {% if perms.webapp.change_review or review.author == request.user %}
+                            <a href="{% url 'webapp:review_edit' review.pk %}"
+                               class="card-link">Редактировать</a>
+                        {% endif %}
+                        {% if perms.webapp.delete_review or review.author == request.user %}
+                            <a href="{% url 'webapp:review_delete' review.pk %}" class="card-link">Удалить</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
