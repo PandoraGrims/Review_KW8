@@ -49,32 +49,31 @@
                         </button>
                     </a>
                 {% endif %}
+                {% if request.user.is_authenticated %}
+                    <a class="nav-link" aria-current="page"
+                       href="{% url 'webapp:create_review' products.pk %}">Добавить
+                        отзыв</a>
+                {% endif %}
             </div>
         </div>
     </div>
 
-
-    <h3 class="mt-2">Reviews: </h3>
-    <div class="row row-cols-3 mt-2">
+    <h3>Reviews</h3>
+    <ul>
         {% for review in reviews %}
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Автор: {{ review.author }}</h5>
-                        <p class="card-text">{{ review.description }}</p>
-                        <p>{{ review.created_at }}</p>
+            <li>
+                <strong>{{ review.author.username }}</strong> ({{ review.author.email }}) - {{ review.rating }} stars
+                - {{ review.text }}
+                {% if request.user.is_authenticated %}
+                    {% if perms.webapp.change_review or review.author == request.user %}
+                        <a href="{% url 'webapp:review_edit' pk=products.pk review_pk=review.pk %}" class="card-link">Редактировать</a>
 
-                        {% if perms.webapp.change_review or review.author == request.user %}
-                            <a href="{% url 'webapp:review_edit' review.pk %}"
-                               class="card-link">Редактировать</a>
-                        {% endif %}
-                        {% if perms.webapp.delete_review or review.author == request.user %}
-                            <a href="{% url 'webapp:review_delete' review.pk %}" class="card-link">Удалить</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+                    {% endif %}
+                    {% if perms.webapp.delete_review or review.author == request.user %}
+                        <a href="{% url 'webapp:review_delete' pk=products.pk review_pk=review.pk %}" class="card-link">Удалить</a>
+                    {% endif %}
+                {% endif %}
+            </li>
         {% endfor %}
-    </div>
-
+    </ul>
 {% endblock %}

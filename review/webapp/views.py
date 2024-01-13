@@ -1,8 +1,8 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from webapp.models import Product
-from webapp.forms import ProductForm
+from webapp.models import Product, Review
+from webapp.forms import ProductForm, ReviewForm
 from django.shortcuts import reverse
 
 
@@ -16,6 +16,12 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = 'products/product_detail.html'
     context_object_name = 'products'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reviews'] = Review.objects.filter(product=self.object, moderated=True)
+        context['review_form'] = ReviewForm()
+        return context
 
 
 class ProductCreateView(PermissionRequiredMixin, CreateView):

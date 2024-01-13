@@ -1,4 +1,6 @@
 from django.urls import path
+
+from webapp.reviews import CreateReviewView, UpdateReviewView, DeleteReviewView
 from webapp.views import ProductListView, ProductCreateView, ProductDetailView, ProductUpdateView, ProductDeleteView
 
 app_name = "webapp"
@@ -10,10 +12,8 @@ urlpatterns = [
     path('product/<int:pk>/update', ProductUpdateView.as_view(), name="product_update_view"),
     path('product/<int:pk>/delete', ProductDeleteView.as_view(), name="product_delete_view"),
 
-    # path('project/<int:pk>/tasks/add/', TaskCreateView.as_view(), name="task_create"),
-    #
-    # path('task/<int:pk>/', TaskDetailView.as_view(), name='task_detail'),
-    # path('task/<int:pk>/edit/', TaskUpdateView.as_view(), name='task_update'),
-    # path('task/<int:pk>/delete/', TaskDeleteView.as_view(), name='task_delete'),
-    # path('projects/<int:pk>/change-users/', ChangeUsersInProjectView.as_view(), name="project_users_change"),
+    path('product/<int:pk>/reviews/create/', CreateReviewView.as_view(), name='create_review'),
+    path('product/<int:product_id>/reviews/<int:pk>/edit/', UpdateReviewView.as_view(), name='edit_review'),
+    path('product/<int:product_id>/reviews/<int:pk>/delete/', DeleteReviewView.as_view(), name='delete_review'),
+
 ]
